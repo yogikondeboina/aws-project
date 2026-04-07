@@ -52,7 +52,7 @@ resource "aws_cloudfront_distribution" "this" {
 }
 
 resource "aws_s3_bucket_policy" "allow_cloudfront" {
-  bucket = aws_s3_bucket.s3_backend["site"].id
+  bucket = module.s3.bucket_ids["site"]
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -62,10 +62,10 @@ resource "aws_s3_bucket_policy" "allow_cloudfront" {
         Service = "cloudfront.amazonaws.com"
       }
       Action = "s3:GetObject"
-      Resource = "${aws_s3_bucket.s3_backend["site"].arn}/*"
+      Resource = "${module.s3.bucket_arns["site"]}/*"
       Condition = {
         StringEquals = {
-          "AWS:SourceArn" = aws_cloudfront_distribution.this.arn
+          "AWS:SourceArn" = module.cloudfront.cloudfront_arn
         }
       }
     }]
