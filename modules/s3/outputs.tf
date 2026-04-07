@@ -1,7 +1,5 @@
-output "bucket_id" {
-  value = aws_s3_bucket.s3_backend.id
-}
-
-output "bucket_arn" {
-  value = aws_s3_bucket.s3_backend.arn
+output "bucket_ids" {
+  value = {
+    for k, v in aws_s3_bucket.s3_backend : k => v.id
+  }
 }

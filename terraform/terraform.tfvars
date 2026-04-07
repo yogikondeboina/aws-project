@@ -1,4 +1,5 @@
-bucket_name = "terraorm-backend-lab1"
+bucket_name = "cricket-live-site-dev"
+logs_bucket_name = "cricket-live-site-dev-logs"
 environment = "dev"
 
 tags = {

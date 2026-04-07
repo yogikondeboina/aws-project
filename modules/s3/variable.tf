@@ -1,6 +1,6 @@
-variable "bucket_name" {
-  description = "S3 bucket name"
-  type        = string
+variable "buckets" {
+  description = "Map of bucket names"
+  type        = map(string)
 }
 
 variable "tags" {
