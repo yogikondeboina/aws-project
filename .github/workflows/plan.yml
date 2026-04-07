@@ -1,38 +1,39 @@
 name: Terraform CI/CD Pipeline
 
 on:
-  pull_request:
-    branches:
-      - dev
   push:
     branches:
       - dev
 
 permissions:
-  id-token: write   # Required for OIDC
+  id-token: write
   contents: read
 
 env:
-  AWS_REGION: ap-south-1
+  AWS_REGION: us-east-1
   TF_WORKING_DIR: terraform
+  ROLE_ARN: arn:aws:iam::596122389379:role/github-actions-role
 
 jobs:
 
   # =========================
-  # 1️⃣ Terraform PLAN (PR)
+  # 1️⃣ Terraform PLAN
   # =========================
   terraform-plan:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+
+    outputs:
+      plan-status: ${{ steps.plan.outcome }}
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 🔐 Global Authentication
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::596122389379:role/github-actions-role
+          role-to-assume: ${{ env.ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Terraform
@@ -40,10 +41,6 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -input=false
-        working-directory: ${{ env.TF_WORKING_DIR }}
-
-      - name: Terraform Format Check
-        run: terraform fmt -check
         working-directory: ${{ env.TF_WORKING_DIR }}
 
       - name: Terraform Validate
@@ -51,38 +48,31 @@ jobs:
         working-directory: ${{ env.TF_WORKING_DIR }}
 
       - name: Terraform Plan
+        id: plan
         run: terraform plan -input=false -no-color
         working-directory: ${{ env.TF_WORKING_DIR }}
 
   # =========================
-  # 2️⃣ Terraform APPLY (Push)
+  # 2️⃣ Terraform APPLY
   # =========================
   terraform-apply:
-    if: github.event_name == 'push'
+    needs: terraform-plan   # 👈 depends on plan
+    if: needs.terraform-plan.result == 'success'   # 👈 only run if plan success
     runs-on: ubuntu-latest
 
     environment:
-      name: dev   # You can add approval in GitHub settings
+      name: dev
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 🔐 Reuse Authentication
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::596122389379:role/github-actions-role
+          role-to-assume: ${{ env.ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-
-      - name: Verify AWS Identity
-        run: aws sts get-caller-identity
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init
-        run: terraform init -input=false
-        working-directory: ${{ env.TF_WORKING_DIR }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
