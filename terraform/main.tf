@@ -17,7 +17,7 @@ module "cloudfront" {
   source = "../modules/cloudfront"
 
   bucket_name              = module.s3.bucket_ids["site"]
-  bucket_domain_name       = "${module.s3.bucket_ids["site"]}.s3.amazonaws.com"
+  bucket_domain_name       = module.s3.bucket_domain_names["site"]
   logs_bucket_domain_name  = "${module.s3.bucket_ids["logs"]}.s3.amazonaws.com"
 
   tags = var.tags

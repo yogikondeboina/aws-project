@@ -1,5 +1,5 @@
 variable "bucket_name" {
-  description = "S3 bucket name for static site"
+  description = "S3 bucket name"
   type        = string
 }
 
@@ -14,5 +14,6 @@ variable "logs_bucket_domain_name" {
 }
 
 variable "tags" {
-  type = map(string)
+  description = "Common tags"
+  type        = map(string)
 }

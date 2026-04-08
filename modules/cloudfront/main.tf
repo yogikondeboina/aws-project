@@ -1,19 +1,21 @@
-resource "aws_cloudfront_origin_access_control" "oac" {
-  name                              = "s3-oac"
-  description                       = "OAC for S3 static site"
-  origin_access_control_origin_type = "s3"
-  signing_behavior                  = "always"
-  signing_protocol                  = "sigv4"
+resource "aws_cloudfront_origin_access_identity" "oai" {
+  comment = "OAI for S3 CloudFront access"
 }
 
-resource "aws_cloudfront_distribution" "this" {
+resource "aws_cloudfront_distribution" "cdn" {
+
   enabled             = true
+  is_ipv6_enabled     = true
+  comment             = "CloudFront for S3 static website"
   default_root_object = "index.html"
 
   origin {
-    domain_name              = var.bucket_domain_name
-    origin_id                = "s3-origin"
-    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
+    domain_name = var.bucket_domain_name
+    origin_id   = "s3-origin"
+
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
+    }
   }
 
   default_cache_behavior {
@@ -25,21 +27,17 @@ resource "aws_cloudfront_distribution" "this" {
 
     forwarded_values {
       query_string = false
+
       cookies {
         forward = "none"
       }
     }
   }
 
-  # Logging (use your logs bucket)
   logging_config {
-    bucket = var.logs_bucket_domain_name
     include_cookies = false
+    bucket          = var.logs_bucket_domain_name
     prefix          = "cloudfront-logs/"
-  }
-
-  viewer_certificate {
-    cloudfront_default_certificate = true
   }
 
   restrictions {
@@ -48,26 +46,27 @@ resource "aws_cloudfront_distribution" "this" {
     }
   }
 
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
+
   tags = var.tags
 }
 
 resource "aws_s3_bucket_policy" "allow_cloudfront" {
-  bucket = module.s3.bucket_ids["site"]
+  bucket = var.bucket_name
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Principal = {
-        Service = "cloudfront.amazonaws.com"
-      }
-      Action = "s3:GetObject"
-      Resource = "${module.s3.bucket_arns["site"]}/*"
-      Condition = {
-        StringEquals = {
-          "AWS:SourceArn" = module.cloudfront.cloudfront_arn
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = aws_cloudfront_origin_access_identity.oai.iam_arn
         }
+        Action   = "s3:GetObject"
+        Resource = "arn:aws:s3:::${var.bucket_name}/*"
       }
-    }]
+    ]
   })
 }

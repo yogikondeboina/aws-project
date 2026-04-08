@@ -1,3 +1,3 @@
-output "cloudfront_domain" {
-  value = aws_cloudfront_distribution.this.domain_name
+output "cloudfront_domain_name" {
+  value = aws_cloudfront_distribution.cdn.domain_name
 }
