@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "s3_backend" {
   for_each = var.buckets
+  force_destroy = true
 
   bucket = each.value
   tags   = merge(var.tags, {
