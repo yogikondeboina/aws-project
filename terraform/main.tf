@@ -13,12 +13,3 @@ module "s3" {
   tags = var.tags
 }
 
-module "cloudfront" {
-  source = "../modules/cloudfront"
-
-  bucket_name             = module.s3.bucket_ids["site"]
-  bucket_domain_name      = module.s3.bucket_domain_names["site"]
-  logs_bucket_domain_name = module.s3.bucket_domain_names["logs"]
-
-  tags = var.tags
-}
