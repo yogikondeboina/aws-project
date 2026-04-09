@@ -24,3 +24,7 @@ variable "environment_variables" {
   type        = map(string)
   default     = {}
 }
+
+variable "queue_name" {
+  type = string
+}

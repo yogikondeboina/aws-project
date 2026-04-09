@@ -42,3 +42,9 @@ resource "aws_lambda_permission" "allow_s3" {
   principal     = "s3.amazonaws.com"
   source_arn    = module.input_bucket.bucket_arn
 }
+
+module "sqs_dlq" {
+  source       = "../modules/sqs"
+  queue_name   = var.queue_name
+  tags         = var.tags
+}
