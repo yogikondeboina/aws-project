@@ -5,3 +5,5 @@ tags = {
   Project     = "static-site"
   Environment = "dev"
 }
+
+lambda_role_arn   = "arn:aws:iam::123456789012:role/lambda-s3-processing-role"
