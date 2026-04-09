@@ -6,3 +6,6 @@ try:
     ...
 except Exception as e:
     print(str(e))
+
+def lambda_handler(event, context):
+    raise Exception("Test DLQ error")
