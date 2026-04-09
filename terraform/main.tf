@@ -25,7 +25,7 @@ module "lambda" {
   handler = "app.lambda_handler"
   runtime = "python3.10"
 
-  filename = "lambda-code/lambda.zip"
+  filename = "terraform/lambda-code/lambda.zip"
 
 environment_variables = {
   INPUT_BUCKET  = var.input_bucket_name
