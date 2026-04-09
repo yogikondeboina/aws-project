@@ -4,23 +4,13 @@ provider "aws" {
 
 
 module "input_bucket" {
-  source = "./modules/s3"
-
+  source      = "../modules/s3"
   bucket_name = var.input_bucket_name
-  environment = var.environment
-  tags = {
-    Name        = var.bucket_name
-    Environment = var.environment
-  }
+  tags        = var.tags
 }
 
 module "output_bucket" {
-  source = "./modules/s3"
-
-  bucket_name = var.output_bucket_name
-  environment = var.environment
-  tags = {
-    Name        = var.bucket_name
-    Environment = var.environment
-  }
+  source       = "../modules/s3"
+  bucket_name  = var.output_bucket_name
+  tags         = var.tags
 }
