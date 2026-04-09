@@ -6,4 +6,4 @@ tags = {
   Environment = "dev"
 }
 
-lambda_role_arn   = "arn:aws:iam::123456789012:role/lambda-s3-processing-role"
+lambda_role_arn   = "arn:aws:iam::596122389379:role/lambda-s3-processing-role"
