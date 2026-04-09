@@ -27,10 +27,10 @@ module "lambda" {
 
   filename = "lambda-code/lambda.zip"
 
-  environment_variables = {
-    INPUT_BUCKET  = var.input_bucket_name
-    OUTPUT_BUCKET = var.output_bucket_name
-  }
+environment_variables = {
+  INPUT_BUCKET  = var.input_bucket_name
+  OUTPUT_BUCKET = var.output_bucket_name
+}
 
     tags = var.tags
 }

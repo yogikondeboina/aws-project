@@ -7,8 +7,9 @@ variable "timeout" {
   default = 10
 }
 
-variable "environment" {
-  default = "dev"
+variable "environment_variables" {
+  type    = map(string)
+  default = {}
 }
 
 variable "tags" {

@@ -18,3 +18,9 @@ variable "region" {
 variable "lambda_role_arn" {
   type = string
 }
+
+variable "environment_variables" {
+  description = "Environment variables for Lambda"
+  type        = map(string)
+  default     = {}
+}

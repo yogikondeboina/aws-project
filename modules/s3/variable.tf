@@ -6,3 +6,10 @@ variable "tags" {
   description = "Common tags"
   type        = map(string)
 }
+
+
+variable "environment_variables" {
+  description = "Environment variables for Lambda"
+  type        = map(string)
+  default     = {}
+}

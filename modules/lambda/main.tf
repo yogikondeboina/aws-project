@@ -10,5 +10,9 @@ resource "aws_lambda_function" "lambda" {
   timeout = var.timeout
 
 
+  environment {
+    variables = var.environment_variables
+  }
+
   tags = var.tags
 }
