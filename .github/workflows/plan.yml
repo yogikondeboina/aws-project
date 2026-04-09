@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - qa
 
 permissions:
   id-token: write

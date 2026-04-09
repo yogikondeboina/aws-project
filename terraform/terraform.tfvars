@@ -1,5 +1,5 @@
-bucket_name = "cricket-live-site-dev"
-logs_bucket_name = "cricket-live-site-dev-logs"
+input_bucket_name = "cricket-live-site-dev"
+output_bucket_name = "cricket-live-site-dev-logs"
 environment = "dev"
 
 tags = {
