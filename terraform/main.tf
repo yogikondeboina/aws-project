@@ -22,10 +22,10 @@ module "lambda" {
   function_name = "s3-data-processor"
   iam_role_arn  = var.lambda_role_arn
 
-  handler = "app.lambda_handler"
-  runtime = "python3.10"
+  handler       = "app.lambda_handler"
+  runtime       = "python3.10"
 
-  filename = "lambda-code/lambda.zip"
+  filename      = "lambda-code/lambda.zip"
 
 environment_variables = {
   INPUT_BUCKET  = var.input_bucket_name
@@ -33,4 +33,12 @@ environment_variables = {
 }
 
     tags = var.tags
+}
+
+resource "aws_lambda_permission" "allow_s3" {
+  statement_id  = "AllowS3Invoke"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda.lambda_function_name
+  principal     = "s3.amazonaws.com"
+  source_arn    = module.input_bucket.bucket_arn
 }
