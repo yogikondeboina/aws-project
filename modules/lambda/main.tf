@@ -22,10 +22,9 @@ resource "aws_lambda_function" "lambda" {
 }
 
 resource "aws_iam_role_policy" "lambda_sqs" {
-  role = aws_iam_role.lambda_role.id
+  role = var.lambda_role_name
 
   policy = jsonencode({
-    Version = "2012-10-17",
     Statement = [
       {
         Effect = "Allow",

@@ -19,14 +19,15 @@ module "output_bucket" {
 module "lambda" {
   source = "../modules/lambda"
 
-  function_name = var.function_name
-  iam_role_arn  = var.lambda_role_arn
+  function_name  = var.function_name
+  iam_role_arn   = var.lambda_role_arn
 
-  handler       = "app.lambda_handler"
-  runtime       = "python3.10"
+  handler        = "app.lambda_handler"
+  runtime        = "python3.10"
 
-  filename      = "lambda-code/lambda.zip"
-  dlq_arn        = module.sqs_dlq.queue_arn 
+  filename        = "lambda-code/lambda.zip"
+  dlq_arn          = module.sqs_dlq.queue_arn 
+  lambda_role_name = aws_iam_role.lambda_role.name 
 environment_variables = {
   INPUT_BUCKET  = var.input_bucket_name
   OUTPUT_BUCKET = var.output_bucket_name
