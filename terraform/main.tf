@@ -26,8 +26,7 @@ module "lambda" {
   runtime       = "python3.10"
 
   filename      = "lambda-code/lambda.zip"
-  dlq_arn       = module.sqs_dlq.queue_arn
-
+  dlq_arn        = module.sqs_dlq.queue_arn 
 environment_variables = {
   INPUT_BUCKET  = var.input_bucket_name
   OUTPUT_BUCKET = var.output_bucket_name
