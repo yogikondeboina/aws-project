@@ -8,7 +8,7 @@ resource "aws_lambda_function" "lambda" {
   source_code_hash = filebase64sha256(var.filename)
 
   dead_letter_config {
-    target_arn = aws_sqs_queue.sqs.arn
+    target_arn = aws_sqs_queue.queue.arn
   }
 
   timeout = var.timeout
