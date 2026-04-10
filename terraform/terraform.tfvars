@@ -8,3 +8,4 @@ tags = {
 
 lambda_role_arn   = "arn:aws:iam::596122389379:role/lambda-s3-processing-role"
 queue_name        =  "lambda-dlq"
+function_name     = "s3-data-processor"
