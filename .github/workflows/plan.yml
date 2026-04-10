@@ -53,10 +53,10 @@ jobs:
         run: terraform validate
         working-directory: ${{ env.TF_WORKING_DIR }}
 
-      # - name: Terraform Plan
-      #   id: plan
-      #   run: terraform plan -input=false -no-color
-      #   working-directory: ${{ env.TF_WORKING_DIR }}
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -input=false -no-color
+        working-directory: ${{ env.TF_WORKING_DIR }}
 
   # =========================
   # 2️⃣ Terraform APPLY
