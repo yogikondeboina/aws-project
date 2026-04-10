@@ -1,0 +1,202 @@
+# 🚀 AWS Serverless Data Processing Pipeline (Terraform)
+
+## 📌 Overview
+
+This project demonstrates a **production-ready serverless architecture** using AWS and Terraform. It processes files uploaded to S3, transforms them using Lambda, stores results in another S3 bucket, and provides monitoring and alerting.
+
+---
+
+## 🏗️ Architecture
+
+```id="arch1"
+S3 (Input Bucket)
+        ↓
+    Lambda Function
+        ↓
+S3 (Output Bucket)
+        ↓
+CloudWatch Logs
+        ↓
+CloudWatch Alarm
+        ↓
+SNS (Email Alerts)
+
+Failure Handling:
+Lambda → SQS (Dead Letter Queue)
+```
+
+---
+
+## 📂 Project Structure
+
+```id="struct1"
+AWS-PROJECT-1/
+│
+├── .github/
+│   └── workflows/
+│       └── plan.yml
+│
+├── modules/
+│   ├── lambda/
+│   │   ├── main.tf
+│   │   ├── output.tf
+│   │   └── variable.tf
+│   │
+│   ├── s3/
+│   │   ├── s3.tf
+│   │   ├── outputs.tf
+│   │   └── variable.tf
+│   │
+│   ├── sns/
+│   │   ├── main.tf
+│   │   ├── output.tf
+│   │   └── variable.tf
+│   │
+│   └── sqs/
+│       ├── main.tf
+│       ├── output.tf
+│       └── variable.tf
+│
+├── terraform/
+│   ├── lambda-code/
+│   │   └── app.py
+│   │
+│   ├── backend.tf
+│   ├── main.tf
+│   ├── terraform.tfvars
+│   └── variable.tf
+```
+
+---
+
+## ⚙️ Technologies Used
+
+* AWS S3 (Storage)
+* AWS Lambda (Compute)
+* AWS SQS (DLQ)
+* AWS SNS (Alerts)
+* AWS CloudWatch (Monitoring)
+* Terraform (IaC)
+* Python (Lambda Code)
+
+---
+
+## 🔥 Features
+
+✔ Event-driven architecture (S3 → Lambda)
+✔ Data processing using Lambda
+✔ Output storage in S3
+✔ Error handling using SQS DLQ
+✔ Email alerts using SNS
+✔ Monitoring with CloudWatch
+✔ Modular Terraform structure
+✔ CI/CD pipeline using GitHub Actions
+
+---
+
+## 🚀 Setup Instructions
+
+### 1️⃣ Clone Repository
+
+```id="cmd1"
+git clone https://github.com/your-username/aws-serverless-data-pipeline.git
+cd AWS-PROJECT-1/terraform
+```
+
+---
+
+### 2️⃣ Configure Variables
+
+Update `terraform.tfvars`:
+
+```id="cmd2"
+lambda_role_arn  = "your-role-arn"
+lambda_role_name = "your-role-name"
+
+input_bucket_name  = "your-input-bucket"
+output_bucket_name = "your-output-bucket"
+
+queue_name   = "your-dlq-name"
+alert_email  = "your-email@gmail.com"
+```
+
+---
+
+### 3️⃣ Initialize Terraform
+
+```id="cmd3"
+terraform init
+```
+
+---
+
+### 4️⃣ Deploy Infrastructure
+
+```id="cmd4"
+terraform apply
+```
+
+---
+
+### 5️⃣ Confirm SNS Subscription
+
+* Check your email
+* Click **Confirm Subscription**
+
+---
+
+## 🧪 Testing
+
+### ✔ Upload File to S3
+
+```id="cmd5"
+aws s3 cp test.csv s3://your-input-bucket/input/test.csv
+```
+
+---
+
+### ✔ Expected Results
+
+* Lambda triggered automatically
+* Output file created in output S3 bucket
+* Logs available in CloudWatch
+* Email alert on failure
+* Message sent to DLQ (SQS)
+
+---
+
+## 🔐 IAM Permissions Required
+
+Lambda role must include:
+
+* `s3:GetObject`
+* `s3:PutObject`
+* `sqs:SendMessage`
+* `logs:*`
+
+---
+
+## 🧠 Learning Outcomes
+
+* Terraform modular design
+* Event-driven AWS architecture
+* Lambda debugging and testing
+* DLQ implementation
+* Monitoring & alerting setup
+
+---
+
+## 📈 Future Enhancements
+
+* Add SQS main queue (decoupling)
+* Implement Step Functions
+* Add API Gateway
+* Integrate Athena for querying
+* Add dashboards using QuickSight
+
+---
+
+## 👨‍💻 Author
+
+**Yogaiah Kondeboina**
+DevOps Engineer (Azure & AWS)
