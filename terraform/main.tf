@@ -19,7 +19,7 @@ module "output_bucket" {
 module "lambda" {
   source = "../modules/lambda"
 
-  function_name = "s3-data-processor"
+  function_name = var.function_name
   iam_role_arn  = var.lambda_role_arn
 
   handler       = "app.lambda_handler"
@@ -47,7 +47,7 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = module.input_bucket.bucket_id
 
   lambda_function {
-    lambda_function_arn = module.lambda.lambda_function_arn
+    lambda_function_arn = module.lambda.lambda_arn 
     events              = ["s3:ObjectCreated:*"]
   }
 

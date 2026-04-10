@@ -28,3 +28,7 @@ variable "environment_variables" {
 variable "queue_name" {
   type = string
 }
+
+variable "function_name" {
+  type = string
+}
