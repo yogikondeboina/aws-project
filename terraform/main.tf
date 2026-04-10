@@ -43,6 +43,17 @@ resource "aws_lambda_permission" "allow_s3" {
   source_arn    = module.input_bucket.bucket_arn
 }
 
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket = module.input_bucket.bucket_id
+
+  lambda_function {
+    lambda_function_arn = module.lambda.lambda_function_arn
+    events              = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_lambda_permission.allow_s3]
+}
+
 module "sqs_dlq" {
   source       = "../modules/sqs"
   queue_name   = var.queue_name
