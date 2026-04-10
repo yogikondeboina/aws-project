@@ -22,9 +22,10 @@ resource "aws_lambda_function" "lambda" {
 }
 
 resource "aws_iam_role_policy" "lambda_sqs" {
-  role = var.lambda_role_name
+  role = var.lambda_role_name   # ✅ FIXED
 
   policy = jsonencode({
+    Version = "2012-10-17",
     Statement = [
       {
         Effect = "Allow",
