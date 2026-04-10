@@ -36,3 +36,11 @@ variable "function_name" {
 variable "lambda_role_name" {
   type = string
 }
+
+variable "alert_email" {
+  type = string
+}
+
+variable "topic_name" {
+  type = string
+}

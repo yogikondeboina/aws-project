@@ -61,3 +61,26 @@ module "sqs_dlq" {
   queue_name   = var.queue_name
   tags         = var.tags
 }
+
+module "sns_alerts" {
+  source     = "../modules/sns"
+  topic_name = var.topic_name
+  email      = var.alert_email
+}
+
+resource "aws_cloudwatch_metric_alarm" "lambda_error_alarm" {
+  alarm_name          = "lambda-error-alarm"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "Errors"
+  namespace           = "AWS/Lambda"
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 0
+
+  dimensions = {
+    FunctionName = module.lambda.lambda_function_name
+  }
+
+  alarm_actions = [module.sns_alerts.topic_arn]
+}
