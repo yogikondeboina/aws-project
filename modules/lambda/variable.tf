@@ -16,3 +16,8 @@ variable "tags" {
   description = "Common tags"
   type        = map(string)
 }
+
+variable "dlq_arn" {
+  description = "SQS DLQ ARN"
+  type        = string
+}
