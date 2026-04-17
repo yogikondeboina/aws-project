@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - qa
 
 permissions:
   id-token: write
@@ -29,6 +30,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Zip Lambda Code
+        run: |
+          cd terraform/lambda-code
+          zip lambda.zip app.py
+
       # 🔐 Global Authentication
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
@@ -52,9 +58,9 @@ jobs:
         run: terraform plan -input=false -no-color
         working-directory: ${{ env.TF_WORKING_DIR }}
 
-  # =========================
+  # ==========================
   # 2️⃣ Terraform APPLY
-  # =========================
+  # ==========================
   terraform-apply:
     needs: terraform-plan   # 👈 depends on plan
     if: needs.terraform-plan.result == 'success'   # 👈 only run if plan success
@@ -66,6 +72,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Zip Lambda Code
+        run: |
+          cd terraform/lambda-code
+          zip lambda.zip app.py
 
       # 🔐 Reuse Authentication
       - name: Configure AWS Credentials (OIDC)
@@ -81,10 +92,10 @@ jobs:
         run: terraform init -input=false
         working-directory: ${{ env.TF_WORKING_DIR }}
 
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve -input=false
-      #   working-directory: ${{ env.TF_WORKING_DIR }}
-
       - name: Terraform Apply
-        run: terraform destroy -auto-approve -input=false 
+        run: terraform apply -auto-approve -input=false
         working-directory: ${{ env.TF_WORKING_DIR }}
+
+      # - name: Terraform Destroy
+      #   run: terraform destroy -auto-approve -input=false 
+      #   working-directory: ${{ env.TF_WORKING_DIR }}

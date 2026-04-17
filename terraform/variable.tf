@@ -1,19 +1,46 @@
-variable "bucket_name" {
-  description = "S3 bucket name"
-  type        = string
-}
 
-variable "logs_bucket_name" {
-  description = "S3 bucket name"
-  type        = string
+variable "input_bucket_name" {
+  type = string
 }
-
-variable "environment" {
-  description = "Environment name"
-  type        = string
+variable "output_bucket_name" {
+  type = string
 }
 
 variable "tags" {
   description = "Common tags"
   type        = map(string)
+}
+
+variable "region" {
+  default = "ap-south-1"
+}
+
+variable "lambda_role_arn" {
+  type = string
+}
+
+variable "environment_variables" {
+  description = "Environment variables for Lambda"
+  type        = map(string)
+  default     = {}
+}
+
+variable "queue_name" {
+  type = string
+}
+
+variable "function_name" {
+  type = string
+}
+
+variable "lambda_role_name" {
+  type = string
+}
+
+variable "alert_email" {
+  type = string
+}
+
+variable "topic_name" {
+  type = string
 }
