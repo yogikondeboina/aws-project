@@ -200,5 +200,5 @@ Lambda role must include:
 
 ## 👨‍💻 Author
 
-**Yogaiah Kondeboina**
+**Yogi Kondeboina**
 DevOps Engineer (Azure & AWS)
