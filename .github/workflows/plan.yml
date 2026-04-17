@@ -58,9 +58,9 @@ jobs:
         run: terraform plan -input=false -no-color
         working-directory: ${{ env.TF_WORKING_DIR }}
 
-  # =========================
+  # ==========================
   # 2️⃣ Terraform APPLY
-  # =========================
+  # ==========================
   terraform-apply:
     needs: terraform-plan   # 👈 depends on plan
     if: needs.terraform-plan.result == 'success'   # 👈 only run if plan success
